@@ -14,7 +14,6 @@ const { isLocaleAvailable } = require("../src/translations");
 module.exports = async (req, res) => {
   const {
     username,
-    hide,
     hide_title,
     hide_border,
     card_width,
@@ -23,7 +22,6 @@ module.exports = async (req, res) => {
     bg_color,
     theme,
     cache_seconds,
-    layout,
     repo_count,
     exclude_repo,
     custom_title,
@@ -32,6 +30,14 @@ module.exports = async (req, res) => {
     border_color,
   } = req.query;
   res.setHeader("Content-Type", "image/svg+xml");
+
+  if (blacklist.includes(username)) {
+    return res.send(renderError("Something went wrong"));
+  }
+
+  if (locale && !isLocaleAvailable(locale)) {
+    return res.send(renderError("Something went wrong", "Locale not found"));
+  }  
 
   try {
     const sortType = "fork";
@@ -50,18 +56,15 @@ module.exports = async (req, res) => {
     res.setHeader("Cache-Control", `public, max-age=${cacheSeconds}`);
     
     return res.send(
-      renderTopRepos(topForks, {
+      renderTopRepos(topForks, card_type=sortType, {
         custom_title,
-        card_type: sortType,
         hide_title: parseBoolean(hide_title),
         hide_border: parseBoolean(hide_border),
         card_width: parseInt(card_width, 10),
-        hide: parseArray(hide),
         title_color,
         text_color,
         bg_color,
         theme,
-        layout,
         repo_count,
         border_radius,
         border_color,

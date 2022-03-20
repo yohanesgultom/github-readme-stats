@@ -39,8 +39,6 @@ export type Repo = {
   stargazerCount: number;
 };
 
-export type TopRepoData = Record<string, Data>;
-
 export type WakaTimeData = {
   categories: {
     digital: string;

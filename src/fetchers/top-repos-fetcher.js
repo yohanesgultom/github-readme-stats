@@ -40,9 +40,9 @@ const fetcher = (variables, token) => {
  * @param {string} username
  * @param {string} sortBy
  * @param {string[]} exclude_repo
- * @returns {Promise<import("./types").TopRepoData>}
+ * @returns {Promise<import("./types").Repo[]>}
  */
-async function fetchTopRepos(username, sortBy, exclude_repo = []) {
+async function fetchTopRepos(username, sortBy = "star", exclude_repo = []) {
   if (!username) throw new MissingParamError(["username"]);
 
   const res = await retryer(fetcher, { login: username });
@@ -67,15 +67,12 @@ async function fetchTopRepos(username, sortBy, exclude_repo = []) {
   if (sortBy === "fork") {
     repoNodes = repoNodes
       .sort((a, b) => b.forkCount - a.forkCount)
-      .filter((name) => {
-        return !repoToHide[name.name];
-      });
-  } else {
-    repoNodes = repoNodes
-      .filter((name) => {
-        return !repoToHide[name.name];
-      });
   }
+
+  // filter out repositories to be hidden
+  repoNodes = repoNodes
+    .filter((repo) => !repoToHide[repo.name]);
+
   return repoNodes;
 }
 

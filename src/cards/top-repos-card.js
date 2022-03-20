@@ -6,7 +6,6 @@ const { createProgressNode } = require("../common/createProgressNode");
 const {
   getCardColors,
   flexLayout,
-  chunkArray,
 } = require("../common/utils");
 
 const DEFAULT_CARD_WIDTH = 500;
@@ -32,8 +31,8 @@ const createProgressTextNode = ({ width, color, name, label, progress }) => {
   const progressWidth = width - paddingRight;
 
   return `
-    <text data-testid="lang-name" x="2" y="15" class="lang-name">${name}</text>
-    <text x="${progressTextX}" y="34" class="lang-name">${label}</text>
+    <text data-testid="repo-name" x="2" y="15" class="repo-name">${name}</text>
+    <text x="${progressTextX}" y="34" class="repo-name">${label}</text>
     ${createProgressNode({
       x: 0,
       y: 25,
@@ -97,22 +96,19 @@ const perc2color = (perc) => {
 }
 
 /**
- * @param {import('../fetchers/types').TopRepoData} topRepos
+ * @param {import('../fetchers/types').Repo[]} topRepos
  * @param {object} options
  * @returns {string}
  */
-const renderTopRepos = (topRepos, options = {}) => {
+const renderTopRepos = (topRepos, card_type = "star", options = {}) => {
   const {
-    card_type,
     hide_title,
     hide_border,
     card_width,
     title_color,
     text_color,
     bg_color,
-    hide,
     theme,
-    layout,
     custom_title,
     locale,
     repo_count = DEFAULT_REPO_COUNT,
@@ -125,7 +121,6 @@ const renderTopRepos = (topRepos, options = {}) => {
     translations: repoCardLocales,
   });
 
-  // TODO: filter hide
   let size = Math.min(repo_count, topRepos.length);
   let repos = Object.values(topRepos).slice(0, size);
 
@@ -158,11 +153,11 @@ const renderTopRepos = (topRepos, options = {}) => {
   card.setHideBorder(hide_border);
   card.setHideTitle(hide_title);
   card.setCSS(
-    `.lang-name { font: 400 11px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${colors.textColor} }`,
+    `.repo-name { font: 400 11px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${colors.textColor} }`,
   );
 
   return card.render(`
-    <svg data-testid="lang-items" x="${CARD_PADDING}">
+    <svg data-testid="repo-items" x="${CARD_PADDING}">
       ${finalLayout}
     </svg>
   `);
