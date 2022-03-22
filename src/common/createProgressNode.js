@@ -17,6 +17,7 @@ const createProgressNode = ({
           height="8"
           fill="${color}"
           rx="5" ry="5" x="0" y="0" 
+          class="progress-bar"
           data-testid="lang-progress"
           width="${progressPercentage}%"
       >

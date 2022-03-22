@@ -149,11 +149,14 @@ const renderTopRepos = (topRepos, card_type = "star", options = {}) => {
     colors,
   });
 
-  card.disableAnimations();
   card.setHideBorder(hide_border);
   card.setHideTitle(hide_title);
   card.setCSS(
-    `.repo-name { font: 400 11px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${colors.textColor} }`,
+    `
+    .repo-name { font: 400 11px 'Segoe UI', Ubuntu, Sans-Serif; fill: ${colors.textColor} }
+    .progress-bar { animation: fillBar 1.5s ease-in-out 0s normal 1 forwards; }
+    @keyframes fillBar { from { width: 0%; } }
+    `
   );
 
   return card.render(`
