@@ -173,13 +173,13 @@ describe("Card", () => {
       "rotate(90)",
     );
     expect(
-      document.querySelector("defs linearGradient stop:nth-child(1)"),
+      document.querySelector("defs stop:nth-child(1)"),
     ).toHaveAttribute("stop-color", "#fff");
     expect(
-      document.querySelector("defs linearGradient stop:nth-child(2)"),
+      document.querySelector("defs stop:nth-child(2)"),
     ).toHaveAttribute("stop-color", "#000");
     expect(
-      document.querySelector("defs linearGradient stop:nth-child(3)"),
+      document.querySelector("defs stop:nth-child(3)"),
     ).toHaveAttribute("stop-color", "#f00");
   });
 });
